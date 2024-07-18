@@ -1,0 +1,37 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title">Generate Private Link </h4>
+            {% if messages %}
+            <div class="alert {% if messages.tags %}alert-{{ messages.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                    <div class="text-danger">
+                        {{ message }}
+                    </div>
+                    {% else %}
+                    <div class="text-success">
+                        {{ message }}
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+            <form method="post" class="mt-4">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="email">Respondent Email:</label>
+                    <input type="email" id="email" name="email" class="form-control" placeholder="Enter respondent's email" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Generate Link</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

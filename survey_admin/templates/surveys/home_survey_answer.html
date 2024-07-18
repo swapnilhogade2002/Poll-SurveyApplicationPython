@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}Answer Survey{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card rounded-0 shadow">
+        <div class="card-body">
+
+<!-- Public Survey Link Section -->
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card border-0">
+                <div class="card-body">
+                    <h2 class="card-title">{{ survey.title }}</h2>
+                </div>
+            </div>
+        </div>
+        
+
+        <div class="col-lg-6">
+            <div class="card rounded-0 shadow">
+                <div class="card-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fas fa-share-alt"></i></span>
+                        </div>
+                        <input type="text" id="surveyLink" class="form-control rounded-0" value="{{ request.build_absolute_uri }}" readonly>
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary rounded-0" type="button" onclick="copySurveyLink()">
+                                <i class="fas fa-copy"></i> Copy Link
+                            </button>
+                        </div>
+                    </div>
+                    <p class="mt-3 text-info small">* This link allows anyone to respond to the survey anonymously.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+      
+
+            {% if messages %}
+            <div class="alert {% if messages.tags %}alert-{{ messages.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {% for message in messages %}
+                    {% if message.tags == 'error' %}    
+                    <div class="text-danger bold">
+                      <strong>{{ message }}</strong>
+                    </div>
+                    {% else %}
+                      <div class="text-success bold">
+                        {{ message }}
+                      </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" class="needs-validation" novalidate>
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                
+                {% for field in form.visible_fields %}
+                <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    <div class="invalid-feedback">
+                        Please provide a valid answer for {{ field.label }}
+                    </div>
+                </div>
+                {% endfor %}
+                
+                <button type="submit" class="btn btn-primary btn-sm mt-3">Submit Answers</button>
+                <a href="/" class="btn btn-info btn-sm mt-3">Back to home</a>
+            </form>
+
+
+        </div>
+        <script>
+
+            function copySurveyLink() {
+                    var surveyLink = document.getElementById("surveyLink");
+                    surveyLink.select();
+                    document.execCommand("copy");
+                    alert("Copied the link: " + surveyLink.value);
+                }
+
+            (function() {
+                'use strict';
+                window.addEventListener('load', function() {
+                    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                    var forms = document.getElementsByClassName('needs-validation');
+                    // Loop over them and prevent submission
+                    var validation = Array.prototype.filter.call(forms, function(form) {
+                        form.addEventListener('submit', function(event) {
+                            if (form.checkValidity() === false) {
+                                event.preventDefault();
+                                event.stopPropagation();
+                            }
+                            form.classList.add('was-validated');
+                        }, false);
+                    });
+                }, false);
+            })();
+        </script>
+    </div>
+</div>
+{% endblock %}

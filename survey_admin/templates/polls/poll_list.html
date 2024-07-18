@@ -1,0 +1,86 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="data-heading">Polls List</h2>
+    <div class="mb-3">
+        <a href="{% url 'poll_create' %}" class="btn btn-primary">Create New Poll</a>
+    </div>
+    <div class="table-responsive mt-4">
+        <table id="poll-table" class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Question</th>
+                    <th>Published Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for poll in polls %}
+                <tr>
+                    <td>{{ poll.question_text }}</td>
+                    <td>{{ poll.pub_date }}</td>
+                    <td>
+                        <a href="{% url 'poll_detail' poll.id %}" class="btn btn-outline-primary">
+                            <i class="fas fa-info-circle"></i> View Details</a>
+                        <a href="{% url 'poll_update' poll.id %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-edit"></i> Edit</a>
+                        <a href="{% url 'resultsdata' poll.id %}" class="btn btn-outline-warning">
+                            <i class="fas fa-chart-bar"></i> Results</a>
+                        <form action="{% url 'poll_delete' poll.id %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger" onclick="return confirm('Are you sure you want to delete this poll?')">
+                                <i class="fas fa-trash"></i> Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- Popper.js for Bootstrap -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap4.min.js"></script>
+
+
+<script>
+    $(document).ready(function() {
+        $('#poll-table').DataTable({
+            "paging": true,
+            "ordering": true,
+            "searching": true,
+            "info": true,
+            "responsive": true,
+            "lengthMenu": [10, 25, 50, 75, 100],
+            "pageLength": 10,
+            "language": {
+                "lengthMenu": "Show _MENU_ entries",
+                "info": "Showing _START_ to _END_ of _TOTAL_ entries",
+                "search": "Search:",
+                "paginate": {
+                    "first": "First",
+                    "last": "Last",
+                    "next": "Next",
+                    "previous": "Previous"
+                }
+            }
+        });
+    });
+</script>
+
+{% endblock %}
+
+
+

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+            <div class="card rounded-0 shadow">
+                <div class="card-header bg-light">
+                    <div class="d-flex justify-content-end">
+                        <a class="btn btn-outline-secondary btn-sm" href="{% url 'polls:index' %}">Back To List</a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        {% if error_message %}
+                        <div class="alert alert-danger" role="alert">
+                            <strong>{{ error_message }}</strong>
+                        </div>
+                        {% endif %}
+                        <h2 class="mb-4 text-center">{{ question.question_text }}</h2>
+                        <form action="{% url 'polls:vote' question.id %}" method="post">
+                            {% csrf_token %}
+                            {% for choice in question.choice_set.all %}
+                            <div class="form-check mb-3">
+                                <input type="radio" name="choice" class="form-check-input" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+                                <label class="form-check-label" for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                            </div>
+                            {% endfor %}
+                            <button type="submit" class="btn btn-primary btn-lg btn-block rounded-pill mt-4" style="background-color: #17a2b8;">Submit Vote</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

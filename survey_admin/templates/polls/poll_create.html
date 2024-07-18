@@ -1,0 +1,103 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="container">
+    
+    {% if error_message %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ error_message }}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endif %}
+
+
+    <h2>Create Question with Choices</h2>
+    <form method="post" id="poll-form" action="{% url 'poll_create' %}" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <!-- Static HTML for question text input -->
+        <div class="form-group">
+            <label for="id_question_text">Question Text:</label>
+            <input type="text" class="form-control" id="id_question_text" name="question_text" required>
+            <div class="invalid-feedback">
+                Please enter a question.
+            </div>
+        </div>
+
+        <!-- Start Time Input -->
+        <div class="form-group">
+            <label for="id_start_time">Start Time:</label>
+            <input type="datetime-local" class="form-control" id="id_start_time" name="start_time" required>
+            <div class="invalid-feedback">
+                Please enter a valid start time.
+            </div>
+        </div>
+
+        <!-- End Time Input -->
+        <div class="form-group">
+            <label for="id_end_time">End Time:</label>
+            <input type="datetime-local" class="form-control" id="id_end_time" name="end_time">
+            <div class="invalid-feedback">
+                Please enter a valid end time.
+            </div>
+        </div>
+        
+        <!-- Choices Section -->
+        <h3>Choices</h3>
+        <div id="choices">
+            <!-- Initial choice input -->
+            <div class="form-group">
+                <label for="id_choice_text_1">Choice 1:</label>
+                <input type="text" class="form-control choice-text" name="choice_text" required>
+                <div class="invalid-feedback">
+                    Please enter a choice.
+                </div>
+            </div>
+        </div>
+
+        <!-- Button to add more choices dynamically -->
+        <button type="button" class="btn btn-success" id="add-choice">Add Choice</button>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary">Create Poll</button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addChoiceButton = document.getElementById('add-choice');
+    const choicesContainer = document.getElementById('choices');
+    let choiceCount = 1;
+
+    addChoiceButton.addEventListener('click', function() {
+        choiceCount++;
+
+        // Create a new choice input group
+        const newChoiceGroup = document.createElement('div');
+        newChoiceGroup.className = 'form-group';
+        newChoiceGroup.innerHTML = `
+            <label for="id_choice_text_${choiceCount}">Choice ${choiceCount}:</label>
+            <input type="text" class="form-control choice-text" name="choice_text" required>
+            <div class="invalid-feedback">
+                Please enter a choice.
+            </div>
+        `;
+
+        // Append the new choice input group to the choices container
+        choicesContainer.appendChild(newChoiceGroup);
+    });
+
+    // Form validation
+    const form = document.getElementById('poll-form');
+    form.addEventListener('submit', function(event) {
+        if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+        }
+        form.classList.add('was-validated');
+    }, false);
+});
+</script>
+{% endblock %}

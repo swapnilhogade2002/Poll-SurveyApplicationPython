@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MFA Setup</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .mfa-container {
+            max-width: 400px;
+            margin: auto;
+            margin-top: 100px;
+        }
+        .btn-enable-mfa {
+            background-color: #28a745;
+            border-color: #28a745;
+        }
+        .btn-disable-mfa {
+            background-color: #dc3545;
+            border-color: #dc3545;
+        }
+        .btn-enable-mfa:hover, .btn-enable-mfa:focus {
+            background-color: #218838;
+            border-color: #1e7e34;
+        }
+        .btn-disable-mfa:hover, .btn-disable-mfa:focus {
+            background-color: #c82333;
+            border-color: #bd2130;
+        }
+        .btn-enable-mfa:active, .btn-disable-mfa:active {
+            background-color: #1e7e34;
+            border-color: #218838;
+        }
+    </style>
+</head>
+<body>
+<!--    <div class="container">-->
+<!--        <div class="row">-->
+<!--            <div class="col-md-6 mfa-container">-->
+<!--                <h2 class="mb-3">Multi-Factor Authentication</h2>-->
+<!--                <form id="mfaForm" method="post" action="{% url 'admin_mfa' %}">-->
+<!--                    {% csrf_token %}-->
+<!--                    <div class="form-group">-->
+<!--                        <button type="button" class="btn btn-primary btn-enable-mfa mt-3" id="enableButton">Enable MFA</button>-->
+<!--                    </div>-->
+<!--                </form>-->
+
+<!--                   <div class="form-group">-->
+<!--                        <button type="button" class="btn btn-primary btn-disable-mfa mt-3" id="disableButton">Disable MFA</button>-->
+<!--                    </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <!-- Toast markup -->
+    <div class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-delay="5000">
+        <div class="toast-header">
+            <strong class="mr-auto">MFA Status</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            <!-- Toast message will appear here -->
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional, for some Bootstrap features) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script>
+    $(document).ready(function() {
+        // Toast message setup
+        var toast = $('.toast').toast();
+
+        // Enable MFA button click event
+        $('#enableButton').click(function() {
+            // Show toast message
+            $('.toast-body').text('MFA enabled successfully.');
+            toast.toast('show');
+            // Redirect to a different HTML page
+            window.location.href = 'templates/enable_mfa.html';
+        });
+
+        // Disable MFA button click event
+        $('#disableButton').click(function() {
+            // Show toast message
+            $('.toast-body').text('MFA disabled successfully.');
+            toast.toast('show');
+            // No redirection needed, stay on the same page
+        });
+
+        // Close toast message on close button click
+        $('.close').click(function() {
+            toast.toast('hide');
+        });
+    });
+</script>
+
+</body>
+</html>

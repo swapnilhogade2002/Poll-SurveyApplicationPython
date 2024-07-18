@@ -1,0 +1,23 @@
+<nav class="navbar navbar-expand-lg navbar-expand-md navbar-dark mb-4" style="background-color: black">
+	<div class="container">
+		<a class="navbar-brand" href="/">Polling System</a>
+		{% if user.is_authenticated %}
+
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		  </button>
+		
+		  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
+			  <li class="nav-item {% if page and page == 'home' %}active{% endif %}">
+				
+			  </li>
+			  <li class="nav-item {% if page and page == 'polls' %}active{% endif %}">
+				<a class="nav-link" href="{% url 'polls:index' %}">Polls</a>
+			  </li>
+			</ul>
+			{% endif %}
+
+
+	</div>
+</nav>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Answer Survey</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">{{ survey.title }}</h1>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        {% if error_message %}
+            <div class="alert alert-danger">{{ error_message }}</div>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            {% for question in survey.questions.all %}
+                <div class="form-group">
+                    <label>{{ question.question_text }}</label>
+                    {% if question.question_type == "text" %}
+                        <textarea class="form-control" name="text_answer_{{ question.id }}" rows="3"></textarea>
+                    {% elif question.question_type == "radio" %}
+                        <div>
+                            {% for choice in question.choices.all %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="choice_answer_{{ question.id }}" id="choice_{{ choice.id }}" value="{{ choice.id }}">
+                                    <label class="form-check-label" for="choice_{{ choice.id }}">
+                                        {{ choice.choice_text }}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% elif question.question_type == "select" %}
+                        <select class="form-control" name="choice_answer_{{ question.id }}">
+                            {% for choice in question.choices.all %}
+                                <option value="{{ choice.id }}">{{ choice.choice_text }}</option>
+                            {% endfor %}
+                        </select>
+                    {% elif question.question_type == "integer" %}
+                        <input class="form-control" type="number" name="integer_answer_{{ question.id }}">
+                    {% elif question.question_type == "rating" %}
+                        <input class="form-control" type="number" name="rating_answer_{{ question.id }}" min="1" max="5">
+                    {% endif %}
+                </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-custom btn-block">Submit</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

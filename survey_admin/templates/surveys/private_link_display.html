@@ -1,0 +1,37 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title">Private Survey Link Generated {{survey_title}}</h4>
+            <p class="card-text">Share the following link to participate in the survey:</p>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="survey-link" value="{{ link_url }}" readonly>
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" onclick="copyLink()">Copy</button>
+                </div>
+            </div>
+            <div id="copy-success" class="alert alert-success" style="display: none;" role="alert">
+                Link copied to clipboard!
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copyLink() {
+        var copyText = document.getElementById("survey-link");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+        document.execCommand("copy");
+
+        var copySuccess = document.getElementById("copy-success");
+        copySuccess.style.display = "block";
+        setTimeout(function() {
+            copySuccess.style.display = "none";
+        }, 2000);
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Add Choices to Question</h2>
+  <p><strong>Survey:</strong> {{ survey.title }}</p>
+  <p><strong>Question:</strong> {{ question.question_text }}</p>
+
+  {% if question.question_type == 'radio' or question.question_type == 'select' %}
+    <form method="post" action="{% url 'add_choices_to_question' survey_id=survey.id question_id=question.id %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-success">Add Choice</button>
+    </form>
+  {% else %}
+    <p>No choices needed for this question type.</p>
+  {% endif %}
+{% endblock %}

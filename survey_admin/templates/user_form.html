@@ -1,0 +1,110 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit User</h2>
+
+    <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+        
+        <!-- Username -->
+        <div class="form-group">
+            <label for="id_username">Username</label>
+            <input type="text" class="form-control {% if form.username.errors %}is-invalid{% endif %}" id="id_username" name="username" value="{{ form.username.value }}" required>
+            <div class="invalid-feedback">
+                Username should contain number or letter.
+            </div>
+        </div>
+
+
+        <!-- Email -->
+        <div class="form-group">
+            <label for="id_email">Email address</label>
+            <input type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}" id="id_email" name="email" value="{{ form.email.value }}" required>
+            <div class="invalid-feedback">
+                {% for error in form.email.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Role -->
+        <div class="form-group">
+            <label for="id_role">Role</label>
+            <select class="custom-select {% if form.role.errors %}is-invalid{% endif %}" id="id_role" name="role" required>
+                <option value="" selected disabled>Choose...</option>
+                {% for role, role_name in form.fields.role.choices %}
+                    <option value="{{ role }}" {% if role == form.role.value %}selected{% endif %}>{{ role_name }}</option>
+                {% endfor %}
+            </select>
+            <div class="invalid-feedback">
+                {% for error in form.role.errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Last Login (Read-only) -->
+        <div class="form-group">
+            <label for="id_last_login">Last Login</label>
+            <input type="text" class="form-control" id="id_last_login" name="last_login" value="{{ user.last_login|date:"F d, Y H:i:s" }}" readonly>
+        </div>
+
+        <!-- Additional Fields as Needed -->
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="{% url 'user_list' %}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+
+<script>
+
+$(document).ready(function() {
+    // user name
+    $('#id_username').on('input', function() {
+        var username = $(this).val();
+        var hasLetter = /[a-zA-Z]/.test(username); // Check for at least one letter
+        var hasNumber = /[0-9]/.test(username);    // Check for at least one number
+
+        if (hasLetter && hasNumber) {
+            $(this).removeClass('is-invalid');
+        } else {
+            $(this).addClass('is-invalid');
+        }
+    });
+
+
+     // Email validation
+     $('#id_email').on('input', function() {
+    var email = $(this).val().trim(); // Trim whitespace from the email input
+    var isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); // Check for valid email format
+
+    if (email === '') {
+        // Empty or whitespace-only input
+        $(this).removeClass('is-invalid');
+    } else if (isValidEmail) {
+        // Valid email format
+        $(this).removeClass('is-invalid');
+    } else {
+        // Invalid email format
+        $(this).addClass('is-invalid');
+    }
+});
+});
+
+// Example starter JavaScript for disabling form submissions if there are invalid fields
+(function() {
+  'use strict';
+  window.addEventListener('load', function() {
+    var form = document.querySelector('.needs-validation');
+    form.addEventListener('submit', function(event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  }, false);
+})();
+</script>
+{% endblock %}

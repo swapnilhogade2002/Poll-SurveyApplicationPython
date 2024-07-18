@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #ffe6e6; /* Light pink background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Comic Sans MS', cursive, sans-serif; /* Playful font */
+        }
+        .thank-you-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px; /* More rounded corners */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            position: relative;
+            max-width: 500px;
+        }
+        .thank-you-container h1 {
+            color: #ff6b6b; /* Bright color for the heading */
+        }
+        .thank-you-container p {
+            font-size: 18px;
+            color: #6c757d;
+        }
+        .thank-you-container a {
+            margin-top: 20px;
+            display: inline-block;
+            color: #fff;
+            background-color: #ff6b6b; /* Bright button color */
+            border-color: #ff6b6b;
+        }
+        .funny-gif {
+            max-width: 60%;
+            height: auto;
+            margin: 20px 0;
+        }
+        .floating-icon {
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 60px;
+            height: 60px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #fff;
+            animation: float 2s infinite ease-in-out;
+        }
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="thank-you-container">
+        <div class="floating-icon">🎉</div>
+        <h1>Thank You!</h1>
+        <p>You have successfully submitted your responses for the survey: "{{ survey.title }}"</p>
+        <img src="https://media2.giphy.com/media/1QffP8E6nk4gKYZO5S/200.webp?cid=790b7611ukonqznvzplzcuzqfqdjneclg4se0jrmrhaelu7n&ep=v1_gifs_search&rid=200.webp&ct=g" alt="Survey GIF" class="survey-gif">
+        <p>You're awesome! Your answers will help us improve. Have a great day!</p>
+        <!-- <a href="{% url 'user_dashboard' %}" class="btn btn-primary">Return to Home</a> -->
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

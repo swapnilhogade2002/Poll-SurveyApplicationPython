@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: Arial, sans-serif;
+        }
+        .registration-container {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            margin-top: 50px;
+        }
+        .registration-title {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            border-radius: 20px;
+        }
+        .btn-primary {
+            background-color: #17a2b8;
+            border: none;
+            border-radius: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .custom-link {
+            text-decoration: none; /* Remove underline */
+            color: #007bff; /* Set link color */
+        }
+        .custom-link:hover {
+            text-decoration: underline; /* Add underline on hover if needed */
+        }
+    </style>
+</head>
+<body>
+    <!-- {% if messages %}
+    <div class="container mt-4">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %} -->
+    
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 registration-container">
+
+
+                {% if messages %}
+                <div class="alert {% if messages.tags %}alert-{{ messages.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                        <div class="text-danger">
+                            {{ message }}
+                        </div>
+                        {% else %}
+                            {{ message }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+        
+        
+
+
+
+                <h2 class="registration-title">User Registration</h2>
+                <form method="post" action="{% url 'user_registration' %}" id="registrationForm" novalidate>
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" class="form-control" id="username" placeholder="Enter username" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$">
+                        <div class="invalid-feedback">Username must contain at least one letter and one number.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" name="email" class="form-control" id="email" placeholder="Enter email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class="form-control" id="password" placeholder="Enter password" required pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$">
+                        <div class="invalid-feedback">Password must contain at least one uppercase letter, one lowercase letter, one number, one special character, and be at least 8 characters long.</div>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm Password</label>
+                        <input type="password" name="confirm_password" class="form-control" id="confirm_password" placeholder="Confirm password" required>
+                        <div class="invalid-feedback">Passwords do not match.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Register</button>
+                    <p><a href="{% url 'admin_login' %}" class="custom-link">Back to login</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional, for some Bootstrap features) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom JavaScript for form validation -->
+    <script>
+        // Wait for the DOM to be fully loaded before executing the script
+        document.addEventListener("DOMContentLoaded", function() {
+            var form = document.getElementById('registrationForm');
+
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+
+                form.classList.add('was-validated');
+            }, false);
+        });
+    </script>
+</body>
+</html>

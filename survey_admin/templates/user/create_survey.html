@@ -1,0 +1,50 @@
+<!-- create_survey.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Survey</title>
+    <!-- Bootstrap CSS link (adjust the path according to your setup) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        /* Optional: Add custom CSS for additional styling */
+        .form-group {
+            margin-bottom: 1.5rem; /* Adjust spacing between form groups */
+        }
+        .error-message {
+            color: red; /* Example: Style error messages */
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Create a Survey</h1>
+        <form id="surveyForm" method="post" action="{% url 'user_survey_created_succesfully' %}" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <!-- Title Field -->
+            <div class="form-group">
+                <label for="title">Survey Title:</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+                <div id="titleError" class="error-message"></div>
+                <!-- Optional: Display validation feedback -->
+                <div class="invalid-feedback">
+                    Please enter a survey title.
+                </div>
+            </div>
+
+            <!-- Description Field -->
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea class="form-control" id="description" name="description"></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Create Survey</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS (optional, for advanced features like validation) -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+</html>

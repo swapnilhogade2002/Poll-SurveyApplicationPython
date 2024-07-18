@@ -1,0 +1,87 @@
+{% extends 'user_base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Add Question to Survey "{{ survey.title }}"</h2>
+    <form method="post" id="questionForm" class="needs-validation" novalidate>
+        {% csrf_token %}
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                <strong>{{ error_message }}</strong>
+            </div>
+        {% endif %}
+        <div class="mb-3">
+            <label for="id_question_text" class="form-label">Question Text:</label>
+            <input type="text" id="id_question_text" name="question_text" class="form-control" required>
+            <div class="invalid-feedback">
+                Please enter the question text.
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="id_question_type" class="form-label">Question Type:</label>
+            <select id="id_question_type" name="question_type" class="form-select" required>
+                <option value="" disabled selected>Select question type</option>
+                <option value="text">Text</option>
+                <option value="radio">Radio</option>
+                <option value="select">Select</option>
+                <option value="integer">Rating</option>
+                <!-- <option value="rating">Rating</option> -->
+
+            </select>
+            <div class="invalid-feedback">
+                Please select a question type.
+            </div>
+        </div>
+        <div id="choices-container" class="mb-3" style="display: none;">
+            <label class="form-label">Choices:</label>
+            <div id="choices" class="mb-3">
+                <!-- Choices will be dynamically added here for radio and select types -->
+            </div>
+            <button type="button" id="add-choice" class="btn btn-secondary">Add Choice</button>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Question</button>
+    </form>
+</div>
+
+<script>
+// Show choices container if question type is radio or select
+document.getElementById('id_question_type').addEventListener('change', function() {
+    var choicesContainer = document.getElementById('choices-container');
+    var questionType = this.value;
+    if (questionType === 'radio' || questionType === 'select') {
+        choicesContainer.style.display = 'block';
+    } else {
+        choicesContainer.style.display = 'none';
+    }
+});
+
+// Add choice input field dynamically
+document.getElementById('add-choice').addEventListener('click', function() {
+    var choicesDiv = document.getElementById('choices');
+    var newChoiceInput = document.createElement('input');
+    newChoiceInput.type = 'text';
+    newChoiceInput.name = 'choice_text';
+    newChoiceInput.className = 'form-control mt-2';
+    newChoiceInput.placeholder = 'Enter choice text';
+    newChoiceInput.required = true;
+    choicesDiv.appendChild(newChoiceInput);
+});
+
+// Bootstrap form validation
+(function () {
+  'use strict'
+  var forms = document.querySelectorAll('.needs-validation')
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
+</script>
+{% endblock %}
+

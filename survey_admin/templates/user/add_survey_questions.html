@@ -1,0 +1,78 @@
+<!-- add_questions_choices.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Questions and Choices</title>
+    <!-- Bootstrap CSS for basic styling -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        /* Custom styles can be added here */
+        body {
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Questions and Choices for Survey: {{ survey.title }}</h1>
+        <form id="questionForm" method="post" action="{% url 'add_questions_choices' survey.id %}">
+            {% csrf_token %}
+            <!-- Question Text Field -->
+            <div class="form-group">
+                <label for="id_question_text">Question Text:</label>
+                {{ question_form.question_text }}
+                <div id="questionError" class="error-message"></div>
+            </div>
+
+            <!-- Question Type Selection -->
+            <div class="form-group">
+                <label for="id_question_type">Question Type:</label>
+                {{ question_form.question_type }}
+            </div>
+
+            <!-- Choice Text Field -->
+            <div class="form-group">
+                <label for="id_choice_text">Choice Text:</label>
+                <input type="text" class="form-control" id="id_choice_text" name="choice_text" required>
+                <div id="choiceError" class="error-message"></div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary">Add Question and Choices</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and jQuery for form validation and interaction -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // JavaScript for form validation and submission handling
+        $(document).ready(function() {
+            $('#questionForm').submit(function(event) {
+                // Validate form fields
+                var questionText = $('#id_question_text').val().trim();
+                var choiceText = $('#id_choice_text').val().trim();
+
+                if (!questionText) {
+                    $('#questionError').text('Please enter a question.');
+                    event.preventDefault(); // Prevent form submission
+                }
+                if (!choiceText) {
+                    $('#choiceError').text('Please enter a choice.');
+                    event.preventDefault(); // Prevent form submission
+                }
+            });
+        });
+    </script>
+</body>
+</html>

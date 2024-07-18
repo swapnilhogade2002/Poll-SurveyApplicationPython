@@ -1,0 +1,49 @@
+{% extends 'user_base.html' %}
+{% block title %}MFA Setup{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    {% if messages %}
+    <div class="alert {% if messages.tags %}alert-{{ messages.tags }}{% endif %} alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+            <div class="text-danger">
+                {{ message }}
+            </div>
+            {% else %}
+                {{ message }}
+            {% endif %}
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+
+
+    <div class="qr-code">
+        <img src="data:image/png;base64,{{ qr_code_image }}" alt="QR Code">
+    </div>
+
+    <form method="post" action="{% url 'verify_otp' %}">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="otp">Enter OTP:</label>
+            <input type="text" id="otp" name="otp" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block btn-custom">Verify OTP</button>
+    </form>
+
+    <div class="text-center mt-3">
+        <p class="mb-0">Didn't receive the OTP?</p>
+        <p><a href="#" class="text-decoration-none">Resend OTP</a></p>
+    </div>
+</div>
+
+
+
+{% endblock %}

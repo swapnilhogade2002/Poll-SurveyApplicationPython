@@ -1,0 +1,91 @@
+{% extends "admin_base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Survey Analytics: {{ survey.title }}</h1>
+
+    <div class="mt-4 mb-4">
+      <a href="{% url 'export_survey_responses_csv_admin' survey.id %}" class="btn btn-success">
+          <i class="fas fa-file-csv"></i> Export Responses to CSV
+      </a>
+   </div> 
+
+   <div class="row">
+    <!-- Total Responses Card -->
+    <div class="col-md-6">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-header">Total Responses</div>
+            <div class="card-body">
+                <h5 class="card-title" id="total-responses">
+                    <i class="fas fa-user-check"></i> Total Responses: {{ survey.responses.count }}
+                </h5>
+            </div>
+        </div>
+    </div>
+
+    <!-- Response Rate Card -->
+    <div class="col-md-6">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-header">Response Rate</div>
+            <div class="card-body">
+                <h5 class="card-title" id="response-rate">
+                    <i class="fas fa-percentage"></i> Response Rate: {{ response_rate }}%
+                </h5>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <!-- <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card text-white bg-info mb-3">
+                <div class="card-header">
+                    <h2 class="card-title">
+                        <i class="fas fa-chart-bar"></i> Response Rate
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <i class="fas fa-user-check"></i> Total Responses: {{ survey.responses.count }}
+                    </p>
+                    <p class="card-text">
+                        <i class="fas fa-percentage"></i> Response Rate: {{ response_rate }}%
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    {% for question in question_data %}
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-secondary text-white">
+            <h4 class="card-title mb-0">{{ question.question_text }}</h4>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <img src="{{ question.img_path }}" alt="Responses Distribution" class="img-fluid rounded mb-3">
+                    <ul class="list-group">
+                        {% for response, count in question.responses.items %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ response }}
+                                <span class="badge badge-primary badge-pill">{{ count }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="col-md-6 mb-4">
+                    {% if question.pie_img_path %}
+                        <img src="{{ question.pie_img_path }}" alt="Pie Chart" class="img-fluid rounded mb-3">
+                    {% endif %}
+                    {% if question.line_img_path %}
+                        <img src="{{ question.line_img_path }}" alt="Line Chart" class="img-fluid rounded mb-3">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

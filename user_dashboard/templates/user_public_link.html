@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Public Link</title>
+</head>
+<body>
+    <h1>Public Link for {{ public_link.survey.title }}</h1>
+    <p>Share this link: <a href="{% url 'answer_public_survey' survey.id %}">{{ request.build_absolute_uri }}</a></p>
+</body>
+</html>
