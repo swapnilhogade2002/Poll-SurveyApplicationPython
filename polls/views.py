@@ -33,6 +33,7 @@ def index(request):
         Exception: For any other exceptions that occur during execution.
     """
     try:
+        print("Hi git demo")
         latest_question_list = Question.objects.order_by('-pub_date')
         context = {'latest_question_list': latest_question_list, 'page':'polls'}
         return render(request, 'polls/index.html', context)
