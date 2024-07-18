@@ -15,6 +15,7 @@ from survey_admin.forms import SurveyForm, SurveyQuestionForm, SurveyChoiceForm,
 
 
 def index(request):
+    print("demo")
     """
     View function to display the list of latest questions.
 
